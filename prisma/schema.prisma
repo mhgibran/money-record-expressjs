@@ -37,11 +37,11 @@ model Icon {
 
 model Account {
   id  Int @id @default(autoincrement())
-  iconId Int
+  icon_id Int
   name String @db.VarChar(60)
   balance Int @db.Int @default(0)
   created_at DateTime @default(now()) 
   updated_at DateTime? @updatedAt
   deleted_at DateTime?
-  icon Icon @relation(fields: [iconId], references: [id])
+  icon Icon @relation(fields: [icon_id], references: [id])
 }

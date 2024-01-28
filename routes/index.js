@@ -9,6 +9,6 @@ router.get("/", function (req, res, next) {
 
 router.post("/login", login);
 router.post("/token", refreshToken);
-router.get("/accounts", authenticateToken, );
+router.get("/accounts", authenticateToken);
 
 module.exports = router;

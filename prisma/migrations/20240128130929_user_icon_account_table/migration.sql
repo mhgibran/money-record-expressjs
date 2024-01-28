@@ -29,7 +29,7 @@ CREATE TABLE `Icon` (
 -- CreateTable
 CREATE TABLE `Account` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `iconId` INTEGER NOT NULL,
+    `icon_id` INTEGER NOT NULL,
     `name` VARCHAR(60) NOT NULL,
     `balance` INTEGER NOT NULL DEFAULT 0,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -40,4 +40,4 @@ CREATE TABLE `Account` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Account` ADD CONSTRAINT `Account_iconId_fkey` FOREIGN KEY (`iconId`) REFERENCES `Icon`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Account` ADD CONSTRAINT `Account_icon_id_fkey` FOREIGN KEY (`icon_id`) REFERENCES `Icon`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

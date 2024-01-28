@@ -22,7 +22,9 @@ const store = async function (req, res) {
       },
     });
 
-    return res.json({ message: "Successfully added icon!", data: data });
+    return res
+      .status(201)
+      .json({ message: "Successfully added icon!", data: data });
   } catch (error) {
     console.log(error);
     fs.unlinkSync(uploadedFile.path);
