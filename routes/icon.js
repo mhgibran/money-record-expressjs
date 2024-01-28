@@ -20,8 +20,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get("/", authenticateToken, get);
-router.post("/", upload.single("file"), store);
-router.put("/:id", upload.single("file"), update);
-router.delete("/:id", destroy);
+router.post("/", authenticateToken, upload.single("file"), store);
+router.put("/:id", authenticateToken, upload.single("file"), update);
+router.delete("/:id", authenticateToken, destroy);
 
 module.exports = router;

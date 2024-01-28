@@ -1,4 +1,5 @@
 const prisma = require("../prisma/client");
+const path = require("path");
 const fs = require("fs");
 
 const get = async function (req, res) {
@@ -8,7 +9,7 @@ const get = async function (req, res) {
     },
   });
 
-  return res.json(data);
+  return res.json({ data: data });
 };
 
 const store = async function (req, res) {
@@ -17,7 +18,7 @@ const store = async function (req, res) {
 
     const data = await prisma.icon.create({
       data: {
-        icon: uploadedFile.path,
+        icon: "accounts/" + uploadedFile.filename,
       },
     });
 
@@ -43,13 +44,15 @@ const update = async function (req, res) {
   }
 
   try {
-    fs.unlinkSync(data.icon);
-    const uploadedFile = req.file;
+    const fileName = data.icon;
+    const filePath = path.join("public/", fileName);
+    fs.unlinkSync(filePath);
 
+    const uploadedFile = req.file;
     const updatedData = await prisma.icon.update({
       where: { id: parseInt(id) },
       data: {
-        icon: uploadedFile.path,
+        icon: "accounts/" + uploadedFile.filename,
       },
     });
     return res.json({
