@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 
 const get = async function (req, res) {
-  const data = await prisma.icon.findMany({
+  const data = await prisma.AccountImage.findMany({
     where: {
       deleted_at: null,
     },
@@ -16,15 +16,15 @@ const store = async function (req, res) {
   try {
     const uploadedFile = req.file;
 
-    const data = await prisma.icon.create({
+    const data = await prisma.AccountImage.create({
       data: {
-        icon: "accounts/" + uploadedFile.filename,
+        image_url: "accounts/" + uploadedFile.filename,
       },
     });
 
     return res
       .status(201)
-      .json({ message: "Successfully added icon!", data: data });
+      .json({ message: "Successfully added account image!", data: data });
   } catch (error) {
     console.log(error);
     fs.unlinkSync(uploadedFile.path);
@@ -35,7 +35,7 @@ const store = async function (req, res) {
 const update = async function (req, res) {
   const id = req.params.id;
 
-  const data = await prisma.icon.findUnique({
+  const data = await prisma.AccountImage.findUnique({
     where: { id: parseInt(id) },
   });
 
@@ -46,19 +46,19 @@ const update = async function (req, res) {
   }
 
   try {
-    const fileName = data.icon;
+    const fileName = data.image_url;
     const filePath = path.join("public/", fileName);
     fs.unlinkSync(filePath);
 
     const uploadedFile = req.file;
-    const updatedData = await prisma.icon.update({
+    const updatedData = await prisma.AccountImage.update({
       where: { id: parseInt(id) },
       data: {
-        icon: "accounts/" + uploadedFile.filename,
+        image_url: "accounts/" + uploadedFile.filename,
       },
     });
     return res.json({
-      message: "Successfully updated icon!",
+      message: "Successfully updated account image!",
       data: updatedData,
     });
   } catch (error) {
@@ -70,7 +70,7 @@ const update = async function (req, res) {
 const destroy = async function (req, res) {
   const id = req.params.id;
 
-  const data = await prisma.icon.findUnique({
+  const data = await prisma.AccountImage.findUnique({
     where: { id: parseInt(id) },
   });
 
@@ -81,14 +81,14 @@ const destroy = async function (req, res) {
   }
 
   try {
-    await prisma.icon.update({
+    await prisma.AccountImage.update({
       where: { id: parseInt(id) },
       data: {
         deleted_at: new Date(),
       },
     });
     return res.json({
-      message: "Successfully deleted icon!",
+      message: "Successfully deleted account image!",
     });
   } catch (error) {
     console.log(error);

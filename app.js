@@ -9,14 +9,14 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 var indexRouter = require("./routes/index");
-var iconRouter = require("./routes/icon");
+var accountImageRouter = require("./routes/account-image");
 var accountRouter = require("./routes/account");
 
 app.use("/", indexRouter);
-app.use("/icon", iconRouter);
+app.use("/account-image", accountImageRouter);
 app.use("/account", accountRouter);
 
 app.listen(PORT, () => {

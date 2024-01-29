@@ -2,13 +2,22 @@ const prisma = require("../prisma/client");
 const { validationResult } = require("express-validator");
 
 const get = async function (req, res) {
-  const data = await prisma.account.findMany({ where: { deleted_at: null } });
+  const data = await prisma.Account.findMany({
+    where: { deleted_at: null },
+    include: {
+      image: {
+        select: {
+          image_url: true,
+        },
+      },
+    },
+  });
 
   return res.json({ data: data });
 };
 
 const store = async function (req, res) {
-  const { icon_id, name, balance } = req.body;
+  const { image_id, name, balance } = req.body;
 
   const errors = validationResult(req);
 
@@ -19,17 +28,15 @@ const store = async function (req, res) {
   }
 
   try {
-    const data = await prisma.account.create({
+    const data = await prisma.Account.create({
       data: {
-        icon_id: parseInt(icon_id),
+        image_id: parseInt(image_id),
         name: name,
         balance: parseInt(balance),
       },
     });
 
-    return res
-      .status(201)
-      .json({ message: "Successfully added new account!", data: data });
+    return res.status(201).json({ message: "Successfully added new account!" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -37,8 +44,15 @@ const store = async function (req, res) {
 };
 
 const show = async function (req, res) {
-  const data = await prisma.account.findUnique({
-    where: { id: parseInt(req.params.id) },
+  const data = await prisma.Account.findUnique({
+    where: { id: parseInt(req.params.id), deleted_at: null },
+    include: {
+      image: {
+        select: {
+          image_url: true,
+        },
+      },
+    },
   });
 
   return res.json({ data: data });
@@ -46,7 +60,7 @@ const show = async function (req, res) {
 
 const update = async function (req, res) {
   const id = req.params.id;
-  const { icon_id, name, balance } = req.body;
+  const { image_id, name, balance } = req.body;
 
   const errors = validationResult(req);
 
@@ -57,12 +71,23 @@ const update = async function (req, res) {
   }
 
   try {
-    const data = await prisma.account.update({
-      where: { id: parseInt(id) },
+    await prisma.Account.update({
+      where: { id: parseInt(id), deleted_at: null },
       data: {
-        icon_id: parseInt(icon_id),
+        image_id: parseInt(image_id),
         name: name,
         balance: parseInt(balance),
+      },
+    });
+
+    const data = await prisma.Account.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        image: {
+          select: {
+            image_url: true,
+          },
+        },
       },
     });
 
@@ -84,7 +109,7 @@ const destroy = async function (req, res) {
   }
 
   try {
-    const data = await prisma.account.update({
+    await prisma.Account.update({
       where: { id: parseInt(id) },
       data: {
         deleted_at: new Date(),

@@ -10,7 +10,7 @@ const login = async function (req, res) {
     return res.sendStatus(400);
   }
 
-  const user = await prisma.user.findFirst((u) => u.email === email);
+  const user = await prisma.User.findFirst((u) => u.email === email);
 
   if (!user || !bcrypt.compareSync(password, user.password)) {
     return res.status(401).json({

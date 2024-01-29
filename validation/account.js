@@ -15,16 +15,16 @@ const accountValidateSchema = [
 
       return true;
     }),
-  body("icon_id")
+  body("image_id")
     .exists()
-    .withMessage("Icon must be selected!")
+    .withMessage("Account image must be selected!")
     .custom(async (value) => {
-      const isExists = await prisma.icon.findUnique({
+      const isExists = await prisma.AccountImage.findUnique({
         where: { id: parseInt(value) },
       });
 
       if (!isExists) {
-        return Promise.reject("Invalid icon!");
+        return Promise.reject("Invalid account image!");
       }
 
       return true;

@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const authenticateToken = require("../middleware/auth");
-const { get, store, update, destroy } = require("../controller/icon");
+const { get, store, update, destroy } = require("../controller/account-image");
 const multer = require("multer");
 const path = require("path");
 
